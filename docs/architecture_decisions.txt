@@ -1,0 +1,7 @@
+The decision was made to refactor the monolith into the following microservices:
+
+1 - ms-location-ingester: This microservice uses gRPC with Python to efficiently receive location data from clients. It then publishes this data to a Kafka message queue, enabling high-throughput, real-time data ingestion and decoupling the data collection from processing.
+2 - ms-location-processor: The location processor utilizes a Python-based Kafka client to consume location data from the message queue. It then processes and inserts this data into a database, allowing for asynchronous and scalable data handling while maintaining data consistency.
+3 - ms-rest-api: This microservice retains most of the original monolith's REST API functionality, using Flask and SQLAlchemy to handle HTTP requests and database operations. By keeping this service separate, it allows for independent scaling of the API layer and maintains a clear separation of concerns in the application architecture. The use of a RESTful API facilitates easier frontend development, as REST principles are widely understood and supported by numerous frontend frameworks and libraries, promoting faster integration and reducing potential friction in the development process.
+
+

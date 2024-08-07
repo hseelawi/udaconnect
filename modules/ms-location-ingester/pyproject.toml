@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ms-location-ingester"
+version = "0.1.0"
+description = ""
+authors = ["Haitham Seelawi <haitham.seelawi@adarga.ai>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+grpcio = "^1.65.4"
+grpcio-tools = "^1.65.4"
+kafka-python = "^2.0.2"
+pydantic-settings = "^2.4.0"
+shapely = "^2.0.5"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

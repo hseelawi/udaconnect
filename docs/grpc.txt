@@ -1,0 +1,5 @@
+A sample client implementation is provided in `modules/ms-location-ingester/geolocation_client.py`.
+
+A k8s job is implemented in `deployment/location-ingester-job.yaml`, to generate fake events.
+
+The above two files provide enough documentation on how to interact with the gRPC server.

@@ -1,0 +1,53 @@
+persistence:
+  enabled: true
+  size: 1Gi
+
+replicaCount: 1
+
+# Set the fullname override to ensure the service is named 'kafka'
+fullnameOverride: "kafka"
+
+# Disable SASL and configure for plaintext
+listeners:
+  client:
+    protocol: PLAINTEXT
+  controller:
+    protocol: PLAINTEXT
+  interbroker:
+    protocol: PLAINTEXT
+
+# Configure the Kafka service
+service:
+  ports:
+    client: 9092
+
+# Enable Kraft mode
+kraft:
+  enabled: true
+  controllerQuorumVoters: []
+  topics:
+    - name: geolocation_topic
+      partitions: 3
+      replicationFactor: 1
+      config:
+        max.message.bytes: "64000"
+        retention.ms: "604800000"
+        segment.bytes: "1073741824"
+
+# Additional Kafka configuration
+extraEnvVars:
+  - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
+    value: "true"
+  - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+    value: "CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,CLIENT:PLAINTEXT"
+  - name: KAFKA_CFG_LISTENERS
+    value: "CONTROLLER://:9093,INTERNAL://:9094,CLIENT://:9092"
+  - name: KAFKA_CFG_ADVERTISED_LISTENERS
+    value: "INTERNAL://$(MY_POD_NAME).kafka-headless.$(MY_POD_NAMESPACE).svc.cluster.local:9094,CLIENT://$(MY_POD_NAME).kafka-headless.$(MY_POD_NAMESPACE).svc.cluster.local:9092"
+
+# Explicitly disable SASL
+auth:
+  clientProtocol: plaintext
+  interBrokerProtocol: plaintext
+  sasl:
+    enabled: false

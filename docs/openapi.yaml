@@ -1,0 +1,184 @@
+openapi: 3.0.1
+info:
+  title: UdaConnect API
+  description: Connections via geolocation.
+  version: 0.1.0
+
+paths:
+  /health:
+    get:
+      summary: Check API health
+      responses:
+        '200':
+          description: Healthy response
+          content:
+            application/json:
+              schema:
+                type: string
+              example: "healthy"
+
+  /locations:
+    get:
+      summary: Retrieve a location
+      parameters:
+        - name: location_id
+          in: query
+          description: Unique ID for a given Location
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+
+  /persons:
+    get:
+      summary: Retrieve all persons
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+    
+    post:
+      summary: Create a new person
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        '201':
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+
+  /persons/{person_id}:
+    get:
+      summary: Retrieve a person
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          description: Unique ID for a given Person
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+
+  /persons/{person_id}/connection:
+    get:
+      summary: Find connections for a person
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          description: Unique ID for a given Person
+          schema:
+            type: integer
+        - name: start_date
+          in: query
+          required: true
+          description: Lower bound of date range
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: true
+          description: Upper bound of date range
+          schema:
+            type: string
+            format: date
+        - name: distance
+          in: query
+          required: false
+          description: Proximity to a given user in meters
+          schema:
+            type: integer
+            default: 5
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Connection'
+
+components:
+  schemas:
+    Location:
+      type: object
+      properties:
+        id:
+          type: integer
+        person_id:
+          type: integer
+        longitude:
+          type: string
+        latitude:
+          type: string
+        creation_time:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        person_id: 5
+        longitude: "-122.290883"
+        latitude: "37.553441"
+        creation_time: "2024-08-06T14:28:23.382748"
+    
+    Person:
+      type: object
+      properties:
+        id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        company_name:
+          type: string
+      example:
+        id: 1
+        first_name: "John"
+        last_name: "Doe"
+        company_name: "Acme Inc."
+    
+    Connection:
+      type: object
+      properties:
+        location:
+          $ref: '#/components/schemas/Location'
+        person:
+          $ref: '#/components/schemas/Person'
+      example:
+        location:
+          id: 1
+          person_id: 5
+          longitude: "-122.290883"
+          latitude: "37.553441"
+          creation_time: "2024-08-07T14:28:23.382748"
+        person:
+          id: 5
+          first_name: "Jane"
+          last_name: "Smith"
+          company_name: "Tech Solutions Ltd."

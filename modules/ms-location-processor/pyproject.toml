@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "ms-location-processor"
+version = "0.1.0"
+description = ""
+authors = ["Haitham Seelawi <haitham.seelawi@adarga.ai>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+sqlalchemy = "^2.0.32"
+geoalchemy2 = "^0.15.2"
+shapely = "^2.0.5"
+psycopg2-binary = "^2.9.9"
+kafka-python = "^2.0.2"
+pydantic-settings = "^2.4.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

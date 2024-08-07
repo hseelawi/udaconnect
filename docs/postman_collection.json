@@ -1,0 +1,110 @@
+{
+  "info": {
+    "name": "UdaConnect API",
+    "description": "Connections via geolocation.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      },
+      "response": []
+    },
+    {
+      "name": "Retrieve a location",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/locations",
+        "query": [
+          {
+            "key": "location_id",
+            "value": "1",
+            "description": "Unique ID for a given Location"
+          }
+        ]
+      },
+      "response": []
+    },
+    {
+      "name": "Retrieve all persons",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/persons"
+      },
+      "response": []
+    },
+    {
+      "name": "Create a new person",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/persons",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"company_name\": \"Acme Inc.\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Retrieve a person",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/persons/:person_id",
+        "variable": [
+          {
+            "key": "person_id",
+            "value": "1"
+          }
+        ]
+      },
+      "response": []
+    },
+    {
+      "name": "Find connections for a person",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/persons/:person_id/connection",
+        "variable": [
+          {
+            "key": "person_id",
+            "value": "1"
+          }
+        ],
+        "query": [
+          {
+            "key": "start_date",
+            "value": "2024-08-06",
+            "description": "Lower bound of date range"
+          },
+          {
+            "key": "end_date",
+            "value": "2024-08-07",
+            "description": "Upper bound of date range"
+          },
+          {
+            "key": "distance",
+            "value": "5",
+            "description": "Proximity to a given user in meters"
+          }
+        ]
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ]
+}

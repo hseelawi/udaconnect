@@ -1,50 +1,32 @@
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    service: udaconnect-api
-  name: udaconnect-api
-spec:
-  ports:
-  - name: "5000"
-    port: 5000
-    targetPort: 5000
-    nodePort: 30001
-  selector:
-    service: udaconnect-api
-  type: NodePort
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    service: udaconnect-api
-  name: udaconnect-api
+  name: ms-location-processor
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: udaconnect-api
+      app: ms-location-processor
   template:
     metadata:
       labels:
-        service: udaconnect-api
+        app: ms-location-processor
     spec:
       containers:
-      - image: cadmus86/udaconnect:ms-rest-api
-        name: udaconnect-api
-        imagePullPolicy: Always
+      - name: ms-location-processor
+        image: cadmus86/udaconnect:ms-location-processor
         env:
+        - name: KAFKA_TOPIC
+          value: geolocation_topic
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: kafka:9092
+        - name: LOG_LEVEL
+          value: "INFO"
         - name: DB_USERNAME
           valueFrom:
             configMapKeyRef:
               name: db-env
               key: DB_USERNAME
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: db-secret
-              key: DB_PASSWORD
         - name: DB_NAME
           valueFrom:
             configMapKeyRef:
@@ -60,4 +42,9 @@ spec:
             configMapKeyRef:
               name: db-env
               key: DB_PORT
-      restartPolicy: Always
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_PASSWORD
+        imagePullPolicy: Always

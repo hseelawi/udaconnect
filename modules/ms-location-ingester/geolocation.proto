@@ -1,0 +1,20 @@
+syntax = "proto3";
+package geolocation;
+
+import "google/protobuf/timestamp.proto";
+
+service GeoLocationService {
+  rpc SendLocation (LocationMessage) returns (LocationResponse) {}
+}
+
+message LocationMessage {
+  int32 person_id = 1;
+  double longitude = 2;
+  double latitude = 3;
+  google.protobuf.Timestamp creation_time = 4;
+}
+
+message LocationResponse {
+  bool success = 1;
+  string message = 2;
+}

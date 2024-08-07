@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: geolocation-client-job
+spec:
+  template:
+    metadata:
+      name: geolocation-client
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: geolocation-client
+        image: cadmus86/udaconnect:ms-location-ingester
+        imagePullPolicy: Always
+        command: ["python", "geolocation_client.py"]
+        env:
+        - name: NUM_LOCATION_ENTRIES
+          value: "50"
+        - name: GRPC_SERVER_PORT
+          value: "50051"
+        - name: GRPC_CLIENT_TARGET
+          value: geolocation-server
+        - name: LOG_LEVEL
+          value: "INFO"
