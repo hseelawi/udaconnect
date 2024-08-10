@@ -41,7 +41,7 @@ helm repo update
 
 1. Deploy PostgreSQL:
    ```bash
-   kubectl apply -f deployments/postgres.yaml
+   kubectl apply -f deployment/postgres.yaml
    ```
 
 2. Deploy Kafka using Helm:
@@ -51,8 +51,8 @@ helm repo update
 
 3. Apply ConfigMap and Secret for the database:
    ```bash
-   kubectl apply -f deployments/db-configmap.yaml
-   kubectl apply -f deployments/db-secret.yaml
+   kubectl apply -f deployment/db-configmap.yaml
+   kubectl apply -f deployment/db-secret.yaml
    ```
 
 ## Step 5: Deploy Application Components
@@ -60,10 +60,10 @@ helm repo update
 Deploy the main application components:
 
 ```bash
-kubectl apply -f deployments/udaconnect-api.yaml
-kubectl apply -f deployments/udaconnect-app.yaml
-kubectl apply -f deployments/location-processor.yaml
-kubectl apply -f deployments/location-ingester.yaml
+kubectl apply -f deployment/udaconnect-api.yaml
+kubectl apply -f deployment/udaconnect-app.yaml
+kubectl apply -f deployment/location-processor.yaml
+kubectl apply -f deployment/location-ingester.yaml
 ```
 
 ## Step 6: Verify the Installations
@@ -91,7 +91,7 @@ You should see `geolocation_topic` in the list of topics.
 After verifying that all components are working correctly, deploy the location ingester job:
 
 ```bash
-kubectl apply -f deployments/location-ingester-job.yaml
+kubectl apply -f deployment/location-ingester-job.yaml
 ```
 
 ## Connecting to Kafka
@@ -115,10 +115,10 @@ To remove all deployed resources:
 
 2. Delete application components:
    ```bash
-   kubectl delete -f deployments/udaconnect-api.yaml
-   kubectl delete -f deployments/udaconnect-app.yaml
-   kubectl delete -f deployments/location-processor.yaml
-   kubectl delete -f deployments/location-ingester.yaml
+   kubectl delete -f deployment/udaconnect-api.yaml
+   kubectl delete -f deployment/udaconnect-app.yaml
+   kubectl delete -f deployment/location-processor.yaml
+   kubectl delete -f deployment/location-ingester.yaml
    ```
 
 3. Uninstall Kafka:
@@ -128,9 +128,9 @@ To remove all deployed resources:
 
 4. Delete PostgreSQL and other resources:
    ```bash
-   kubectl delete -f deployments/postgres.yaml
-   kubectl delete -f deployments/db-configmap.yaml
-   kubectl delete -f deployments/db-secret.yaml
+   kubectl delete -f deployment/postgres.yaml
+   kubectl delete -f deployment/db-configmap.yaml
+   kubectl delete -f deployment/db-secret.yaml
    ```
 
 5. Stop and destroy the Vagrant box:
