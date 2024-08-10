@@ -41,7 +41,7 @@ helm repo update
 
 1. Deploy PostgreSQL:
    ```bash
-   kubectl apply -f postgres.yaml
+   kubectl apply -f deployments/postgres.yaml
    ```
 
 2. Deploy Kafka using Helm:
@@ -51,8 +51,8 @@ helm repo update
 
 3. Apply ConfigMap and Secret for the database:
    ```bash
-   kubectl apply -f db-configmap.yaml
-   kubectl apply -f db-secret.yaml
+   kubectl apply -f deployments/db-configmap.yaml
+   kubectl apply -f deployments/db-secret.yaml
    ```
 
 ## Step 5: Deploy Application Components
@@ -60,10 +60,10 @@ helm repo update
 Deploy the main application components:
 
 ```bash
-kubectl apply -f udaconnect-api.yaml
-kubectl apply -f udaconnect-app.yaml
-kubectl apply -f location-processor.yaml
-kubectl apply -f location-ingester.yaml
+kubectl apply -f deployments/udaconnect-api.yaml
+kubectl apply -f deployments/udaconnect-app.yaml
+kubectl apply -f deployments/location-processor.yaml
+kubectl apply -f deployments/location-ingester.yaml
 ```
 
 ## Step 6: Verify the Installations
@@ -81,7 +81,7 @@ You should see pods for Kafka, PostgreSQL, and all UdaConnect components.
 Once the Kafka pods are running, verify that the `geolocation_topic` was created:
 
 ```bash
-kubectl exec -it kafka-0 -- kafka-topics.sh --list --bootstrap-server localhost:9092
+kubectl exec -it kafka-controller-0 -- kafka-topics.sh --list --bootstrap-server localhost:9092
 ```
 
 You should see `geolocation_topic` in the list of topics.
@@ -91,7 +91,7 @@ You should see `geolocation_topic` in the list of topics.
 After verifying that all components are working correctly, deploy the location ingester job:
 
 ```bash
-kubectl apply -f location-ingester-job.yaml
+kubectl apply -f deployments/location-ingester-job.yaml
 ```
 
 ## Connecting to Kafka
@@ -110,15 +110,15 @@ To remove all deployed resources:
 
 1. Delete the job:
    ```bash
-   kubectl delete -f location-ingester-job.yaml
+   kubectl delete -f deployments/location-ingester-job.yaml
    ```
 
 2. Delete application components:
    ```bash
-   kubectl delete -f udaconnect-api.yaml
-   kubectl delete -f udaconnect-app.yaml
-   kubectl delete -f location-processor.yaml
-   kubectl delete -f location-ingester.yaml
+   kubectl delete -f deployments/udaconnect-api.yaml
+   kubectl delete -f deployments/udaconnect-app.yaml
+   kubectl delete -f deployments/location-processor.yaml
+   kubectl delete -f deployments/location-ingester.yaml
    ```
 
 3. Uninstall Kafka:
@@ -128,9 +128,9 @@ To remove all deployed resources:
 
 4. Delete PostgreSQL and other resources:
    ```bash
-   kubectl delete -f postgres.yaml
-   kubectl delete -f db-configmap.yaml
-   kubectl delete -f db-secret.yaml
+   kubectl delete -f deployments/postgres.yaml
+   kubectl delete -f deployments/db-configmap.yaml
+   kubectl delete -f deployments/db-secret.yaml
    ```
 
 5. Stop and destroy the Vagrant box:
@@ -150,7 +150,7 @@ Replace `<pod-name>` with the actual name of the pod you want to investigate.
 
 ## Additional Documentation
 
-To satisfy the project submission requirements please find the following in the `docs/
+To satisfy the project submission requirements please find the following in the `docs/`
 
 - `architecture_design.png`: A visual representation of the project's architecture.
 - `architecture_decisions.txt`: Justification for the design decisions made in the architecture.
